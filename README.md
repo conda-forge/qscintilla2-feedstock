@@ -13,6 +13,18 @@ QScintilla is a port to Qt of Neil Hodgson's Scintilla C++ editor control.
 As well as features found in standard text editing components, QScintilla includes features especially useful when editing and debugging source code. These include support for syntax styling, error indicators, code completion and call tips. The selection margin can contain markers like those used in debuggers to indicate breakpoints and the current line. Styling choices are more open than with many editors, allowing the use of proportional fonts, bold and italics, multiple foreground and background colours and multiple fonts.
 
 
+Current build status
+====================
+
+Linux: [![Circle CI](https://circleci.com/gh/conda-forge/qscintilla2-feedstock.svg?style=shield)](https://circleci.com/gh/conda-forge/qscintilla2-feedstock)
+OSX: [![TravisCI](https://travis-ci.org/conda-forge/qscintilla2-feedstock.svg?branch=master)](https://travis-ci.org/conda-forge/qscintilla2-feedstock)
+Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/conda-forge/qscintilla2-feedstock?svg=True)](https://ci.appveyor.com/project/conda-forge/qscintilla2-feedstock/branch/master)
+
+Current release info
+====================
+Version: [![Anaconda-Server Badge](https://anaconda.org/conda-forge/qscintilla2/badges/version.svg)](https://anaconda.org/conda-forge/qscintilla2)
+Downloads: [![Anaconda-Server Badge](https://anaconda.org/conda-forge/qscintilla2/badges/downloads.svg)](https://anaconda.org/conda-forge/qscintilla2)
+
 Installing qscintilla2
 ======================
 
@@ -33,7 +45,6 @@ It is possible to list all of the versions of `qscintilla2` available on your pl
 ```
 conda search qscintilla2 --channel conda-forge
 ```
-
 
 
 About conda-forge
@@ -69,18 +80,6 @@ Terminology
 
 **conda-forge** - the place where the feedstock and smithy live and work to
                   produce the finished article (built conda distributions)
-
-Current build status
-====================
-
-Linux: [![Circle CI](https://circleci.com/gh/conda-forge/qscintilla2-feedstock.svg?style=shield)](https://circleci.com/gh/conda-forge/qscintilla2-feedstock)
-OSX: [![TravisCI](https://travis-ci.org/conda-forge/qscintilla2-feedstock.svg?branch=master)](https://travis-ci.org/conda-forge/qscintilla2-feedstock)
-Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/conda-forge/qscintilla2-feedstock?svg=True)](https://ci.appveyor.com/project/conda-forge/qscintilla2-feedstock/branch/master)
-
-Current release info
-====================
-Version: [![Anaconda-Server Badge](https://anaconda.org/conda-forge/qscintilla2/badges/version.svg)](https://anaconda.org/conda-forge/qscintilla2)
-Downloads: [![Anaconda-Server Badge](https://anaconda.org/conda-forge/qscintilla2/badges/downloads.svg)](https://anaconda.org/conda-forge/qscintilla2)
 
 
 Updating qscintilla2-feedstock
