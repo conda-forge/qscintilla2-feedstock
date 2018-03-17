@@ -1,7 +1,7 @@
 
 {% set name = "qscintilla2" %}
-{% set version = "2.9.3" %}
-{% set md5 = "3b1cdbce9ef6c28cd868bcc58219f96e" %}
+{% set version = "2.9.4" %}
+{% set md5 = "e60d61ca1ee1dca8df25fe15d8ca7112" %}
 {% set md5_zip = "2b0da639a8ec3d4a37c69a5539d22569" %}
 
 package:
@@ -17,7 +17,7 @@ source:
   md5:  {{ md5_zip }}  # [win]
 
 build:
-  number: 2
+  number: 0
   features:
     - vc9  # [win and py27]
     - vc10  # [win and py34]
