@@ -37,6 +37,10 @@ requirements:
     - qt
     - pyqt
 
+test:
+  imports:
+    - PyQt5.Qsci
+
 about:
   home: https://www.riverbankcomputing.com/software/qscintilla/intro
   license: GPL-3.0
