@@ -1,6 +1,6 @@
 
-{% set version = "2.11.1" %}
-{% set sha256 = "dae54d19e43dba5a3f98ac084fc0bcfa6fb713fa851f1783a01404397fd722f5" %}
+{% set version = "2.11.2" %}
+{% set sha256 = "029bdc476a069fda2cea3cd937ba19cc7fa614fb90578caef98ed703b658f4a1" %}
 
 package:
   name: qscintilla2
@@ -11,7 +11,7 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 2
+  number: 0
   skip: true  # [win and py27]
   skip: true  # [ppc64le]
 
