@@ -11,7 +11,6 @@ source:
 
 build:
   number: 6
-  skip: true  # [win and py27]
   skip: true  # [ppc64le]
   merge_build_host: true  # [linux]
 
@@ -62,7 +61,7 @@ test:
 
 about:
   home: https://www.riverbankcomputing.com/software/qscintilla/intro
-  license: GPL-3.0
+  license: GPL-3.0-or-later
   license_family: GPL
   license_file: LICENSE
   summary: "Qscintilla2 editor for Qt"
