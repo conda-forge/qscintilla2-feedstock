@@ -50,7 +50,8 @@ requirements:
   host:
     - python
     - pip
-    - qt
+    - qt  # [not aarch64]
+    - qt 5.12.9 *_4 # [aarch64]
     - pyqt
   run:
     - python
