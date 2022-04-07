@@ -1,18 +1,16 @@
 
-{% set version = "2.11.2" %}
+{% set version = "2.13.2" %}
 
 package:
   name: qscintilla2
   version: {{ version }}
 
 source:
-  url:  https://www.riverbankcomputing.com/static/Downloads/QScintilla/{{ version }}/QScintilla_gpl-{{ version }}.tar.gz
-  sha256: 029bdc476a069fda2cea3cd937ba19cc7fa614fb90578caef98ed703b658f4a1
+  url:  https://www.riverbankcomputing.com/static/Downloads/QScintilla/{{ version }}/QScintilla_src-{{ version }}.tar.gz
+  sha256: b6c7e5f27b51d25f09fe6cf84ae9a7f0876af0d65d8ccb551109e6e7b25885f4
 
 build:
-  number: 6
-  skip: true  # [ppc64le]
-  merge_build_host: true  # [linux]
+  number: 0
 
 requirements:
   build:
