@@ -50,7 +50,7 @@ echo "========================"
 # Go to python folder
 cd ${SRC_DIR}/Python
 # Configure compilation of Python Qsci module
-$PYTHON configure.py --pyqt=PyQt${QT_MAJOR_VER} --sip=${CONDA_BIN}/sip --qsci-incdir=${PREFIX}/include/qt --qsci-libdir=${PREFIX}/lib --spec=${BUILD_SPEC} --no-qsci-api
+$PYTHON configure.py --pyqt=PyQt${QT_MAJOR_VER} --sip=$PREFIX/bin/sip --qsci-incdir=${PREFIX}/include/qt --qsci-libdir=${PREFIX}/lib --spec=${BUILD_SPEC} --no-qsci-api
 # Build it
 make
 # Install QSci.so to the site-packages folder
