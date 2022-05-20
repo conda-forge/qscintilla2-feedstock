@@ -10,7 +10,7 @@ source:
   sha256: 029bdc476a069fda2cea3cd937ba19cc7fa614fb90578caef98ed703b658f4a1
 
 build:
-  number: 6
+  number: 7
   skip: true  # [ppc64le]
   merge_build_host: true  # [linux]
 
@@ -51,8 +51,7 @@ requirements:
     - python
     - pip
     # Workaround for https://github.com/conda-forge/qt-feedstock/issues/201
-    - qt             # [not linux]
-    - qt 5.12.9 *_4  # [linux]
+    - qt-main
     - pyqt
   run:
     - python
