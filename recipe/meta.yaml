@@ -48,10 +48,12 @@ requirements:
   host:
     - python
     - pip
-    # Workaround for https://github.com/conda-forge/qt-feedstock/issues/201
-    - qt             # [not linux]
-    - qt 5.12.9 *_4  # [linux]
+    - qt-main
     - pyqt
+    - sip
+    - pyqt5-sip
+    - xorg-libxfixes  # [linux]
+    - pyqt-builder
   run:
     - python
     - pyqt
