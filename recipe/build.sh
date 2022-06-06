@@ -2,6 +2,9 @@
 set -ex
 set -o pipefail
 
+export SIP_DIR="${PREFIX}/lib/python${PY_VER}/site-packages/PyQt5/bindings"
+export QMAKEFEATURES=${SRC_DIR}/src/features/
+
 QT_MAJOR_VER=$(qmake -v | sed -n 's/.*Qt version \([0-9])*\).*/\1/p')
 if [ -z "$QT_MAJOR_VER" ]; then
 	echo "Could not determine Qt version of string provided by qmake:"
@@ -34,12 +37,17 @@ echo "==========================="
 # Go to Qscintilla source dir and then to its src folder.
 cd ${SRC_DIR}/src
 # Build the makefile with qmake
-qmake qscintilla.pro -spec ${BUILD_SPEC} -config release
+qmake
 
 # Build Qscintilla
 make -j${CPU_COUNT} ${VERBOSE_AT}
 # and install it
 echo "Installing QScintilla"
+make install
+
+cd ${SRC_DIR}/designer
+qmake INCLUDEPATH+=../src QMAKE_LIBDIR+=../src
+make
 make install
 
 ## Build Python module ##
@@ -51,8 +59,12 @@ echo "========================"
 cd ${SRC_DIR}/Python
 # Configure compilation of Python Qsci module
 mv pyproject{-qt5,}.toml
+echo "[tool.sip.project]
+sip-include-dirs = [\"${PREFIX}/lib/python${PY_VER}/site-packages/PyQt5/bindings\", \"${PREFIX}/share/sip\"]" >> pyproject.toml
+
   sip-build \
     --no-make \
+    --verbose \
     --qsci-features-dir ../src/features \
     --qsci-include-dir ../src \
     --qsci-library-dir ../src \
