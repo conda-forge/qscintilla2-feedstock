@@ -35,6 +35,7 @@ if errorlevel 1 exit 1
 :: Python bindings
 :: Go into the Python folder
 cd %SRC_DIR%\Python
+move pyproject-qt5.toml pyproject.toml
 sip-build --no-make --qsci-features-dir ..\src\features --qsci-include-dir ..\src --qsci-library-dir ..\src --api-dir %PREFIX%\qsci\api/python
 if errorlevel 1 exit 1
 :: Build and install
