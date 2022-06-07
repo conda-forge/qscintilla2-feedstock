@@ -35,9 +35,7 @@ if errorlevel 1 exit 1
 :: Python bindings
 :: Go into the Python folder
 cd %SRC_DIR%\Python
-:: Use configure.py to generate a MAKEFILE
-@echo Configuring with python
-%PYTHON% configure.py --pyqt=PyQt%QT_MAJOR_VER%
+sip-build --no-make --qsci-features-dir ..\src\features --qsci-include-dir ..\src --qsci-library-dir ..\src --api-dir %PREFIX%\qsci\api/python
 if errorlevel 1 exit 1
 :: Build and install
 @echo Compiling python modules
