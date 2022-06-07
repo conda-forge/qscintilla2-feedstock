@@ -38,6 +38,7 @@ cd %SRC_DIR%\Python
 move pyproject-qt5.toml pyproject.toml
 sip-build --no-make --qsci-features-dir ..\src\features --qsci-include-dir ..\src --qsci-library-dir ..\src --api-dir %PREFIX%\qsci\api/python
 if errorlevel 1 exit 1
+dir
 :: Build and install
 @echo Compiling python modules
 nmake
