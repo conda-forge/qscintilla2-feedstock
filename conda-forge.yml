@@ -7,5 +7,3 @@ github:
   tooling_branch_name: main
 os_version:
   linux_64: cos7
-azure:
-  store_build_artifacts: True
