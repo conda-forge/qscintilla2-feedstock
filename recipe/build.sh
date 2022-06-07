@@ -37,7 +37,7 @@ echo "==========================="
 # Go to Qscintilla source dir and then to its src folder.
 cd ${SRC_DIR}/src
 # Build the makefile with qmake
-qmake
+qmake qscintilla.pro -spec ${BUILD_SPEC} -config release
 
 # Build Qscintilla
 make -j${CPU_COUNT} ${VERBOSE_AT}
@@ -46,7 +46,7 @@ echo "Installing QScintilla"
 make install
 
 cd ${SRC_DIR}/designer
-qmake INCLUDEPATH+=../src QMAKE_LIBDIR+=../src
+qmake
 make
 make install
 
@@ -62,9 +62,8 @@ mv pyproject{-qt5,}.toml
 echo "[tool.sip.project]
 sip-include-dirs = [\"${PREFIX}/lib/python${PY_VER}/site-packages/PyQt5/bindings\", \"${PREFIX}/share/sip\"]" >> pyproject.toml
 
-  sip-build \
+sip-build \
     --no-make \
-    --verbose \
     --qsci-features-dir ../src/features \
     --qsci-include-dir ../src \
     --qsci-library-dir ../src \
