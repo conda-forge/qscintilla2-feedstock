@@ -13,7 +13,7 @@ set QT_MAJOR_VER=5
 @echo Building Qscintilla2
 @echo ====================================================
 :: Go to the source folder and enter the Qt4Qt5 dir
-cd %SRC_DIR%\Qt4Qt5
+cd %SRC_DIR%\src
 :: Use qmake to generate a make file
 %LIBRARY_BIN%\qmake qscintilla.pro
 if errorlevel 1 exit 1
@@ -35,12 +35,13 @@ if errorlevel 1 exit 1
 :: Python bindings
 :: Go into the Python folder
 cd %SRC_DIR%\Python
-:: Use configure.py to generate a MAKEFILE
-@echo Configuring with python
-%PYTHON% configure.py --pyqt=PyQt%QT_MAJOR_VER%
+move pyproject-qt5.toml pyproject.toml
+sip-build --no-make --qsci-features-dir ..\src\features --qsci-include-dir ..\src --qsci-library-dir ..\src --api-dir %PREFIX%\qsci\api/python
 if errorlevel 1 exit 1
+
 :: Build and install
 @echo Compiling python modules
+cd build
 nmake
 if errorlevel 1 exit 1
 @echo Installing python modules

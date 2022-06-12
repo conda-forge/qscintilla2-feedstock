@@ -1,11 +1,14 @@
 #!/bin/bash
-set -e
+set -ex
 set -o pipefail
-CONDA_BIN=$PREFIX/bin
-QT_MAJOR_VER=`qmake -v | sed -n 's/.*Qt version \([0-9])*\).*/\1/p'`
+
+export SIP_DIR="${PREFIX}/lib/python${PY_VER}/site-packages/PyQt5/bindings"
+export QMAKEFEATURES=${SRC_DIR}/src/features/
+
+QT_MAJOR_VER=$(qmake -v | sed -n 's/.*Qt version \([0-9])*\).*/\1/p')
 if [ -z "$QT_MAJOR_VER" ]; then
 	echo "Could not determine Qt version of string provided by qmake:"
-	echo `qmake -v`
+	echo $(qmake -v)
 	echo "Aborting..."
 	exit 1
 else
@@ -13,7 +16,7 @@ else
 fi
 
 # Set build specs depending on current platform (Mac OS X or Linux)
-if [ `uname` == Darwin ]; then
+if [ $(uname) == Darwin ]; then
 	BUILD_SPEC=macx-clang
 else
 	BUILD_SPEC=linux-g++
@@ -31,8 +34,8 @@ echo "Building Qscintilla 2"
 echo "Using build spec: ${BUILD_SPEC}"
 echo "==========================="
 
-# Go to Qscintilla source dir and then to its Qt4Qt5 folder.
-cd ${SRC_DIR}/Qt4Qt5
+# Go to Qscintilla source dir and then to its src folder.
+cd ${SRC_DIR}/src
 # Build the makefile with qmake
 qmake qscintilla.pro -spec ${BUILD_SPEC} -config release
 
@@ -40,6 +43,11 @@ qmake qscintilla.pro -spec ${BUILD_SPEC} -config release
 make -j${CPU_COUNT} ${VERBOSE_AT}
 # and install it
 echo "Installing QScintilla"
+make install
+
+cd ${SRC_DIR}/designer
+qmake
+make
 make install
 
 ## Build Python module ##
@@ -50,8 +58,21 @@ echo "========================"
 # Go to python folder
 cd ${SRC_DIR}/Python
 # Configure compilation of Python Qsci module
-$PYTHON configure.py --pyqt=PyQt${QT_MAJOR_VER} --sip=${CONDA_BIN}/sip --qsci-incdir=${PREFIX}/include/qt --qsci-libdir=${PREFIX}/lib --spec=${BUILD_SPEC} --no-qsci-api
+mv pyproject{-qt5,}.toml
+echo "[tool.sip.project]
+sip-include-dirs = [\"${PREFIX}/lib/python${PY_VER}/site-packages/PyQt5/bindings\", \"${PREFIX}/share/sip\"]" >> pyproject.toml
+
+sip-build \
+    --no-make \
+    --qsci-features-dir ../src/features \
+    --qsci-include-dir ../src \
+    --qsci-library-dir ../src \
+    --api-dir ${PREFIX}/qsci/api/python
+
+#$PYTHON configure.py --pyqt=PyQt${QT_MAJOR_VER} --sip=$PREFIX/bin/sip --qsci-incdir=${PREFIX}/include/qt --qsci-libdir=${PREFIX}/lib --spec=${BUILD_SPEC} --no-qsci-api
 # Build it
+cd build
 make
 # Install QSci.so to the site-packages folder
 make install
+
