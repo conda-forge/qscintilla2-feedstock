@@ -19,13 +19,9 @@ pin_run_as_build:
     min_pin: x.x
     max_pin: x.x
 python:
-<<<<<<<< HEAD:.ci_support/osx_arm64_python3.9.____cpython.yaml
 - 3.9.* *_cpython
-========
-- 3.11.* *_cpython
 qt_main:
 - '5.15'
->>>>>>>> main:.ci_support/linux_64_python3.11.____cpython.yaml
 target_platform:
 - osx-arm64
 zip_keys:
