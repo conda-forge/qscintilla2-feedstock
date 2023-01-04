@@ -8,6 +8,8 @@ EXTRA_FLAGS=""
 export SIP_DIR="${PREFIX}/lib/python${PY_VER}/site-packages/PyQt5/bindings"
 export QMAKEFEATURES=${SRC_DIR}/src/features/
 
+
+
 QT_MAJOR_VER=$(qmake -v | sed -n 's/.*Qt version \([0-9])*\).*/\1/p')
 if [ -z "$QT_MAJOR_VER" ]; then
 	echo "Could not determine Qt version of string provided by qmake:"
@@ -30,6 +32,36 @@ else
 		ln -s ${GCC} gcc || true
 	popd
 	export PATH=${PWD}/bin:${PATH}
+fi
+
+# Alternative build specs - if works, we shouls clean or mix
+# the ones before
+
+if [[ $(uname) == "Linux" ]]; then
+    USED_BUILD_PREFIX=${BUILD_PREFIX:-${PREFIX}}
+    echo USED_BUILD_PREFIX=${BUILD_PREFIX}
+
+    ln -s ${GXX} g++ || true
+    ln -s ${GCC} gcc || true
+    ln -s ${USED_BUILD_PREFIX}/bin/${HOST}-gcc-ar gcc-ar || true
+
+    export LD=${GXX}
+    export CC=${GCC}
+    export CXX=${GXX}
+    export PKG_CONFIG_EXECUTABLE=$(basename $(which pkg-config))
+
+    chmod +x g++ gcc gcc-ar
+    export PATH=${PWD}:${PATH}
+
+    SYSROOT_FLAGS="-L ${BUILD_PREFIX}/${HOST}/sysroot/usr/lib64 -L ${BUILD_PREFIX}/${HOST}/sysroot/usr/lib"
+    export CFLAGS="$SYSROOT_FLAGS $CFLAGS"
+    export CXXFLAGS="$SYSROOT_FLAGS $CXXFLAGS"
+    export LDFLAGS="$SYSROOT_FLAGS $LDFLAGS"
+fi
+
+if [[ $(uname) == "Darwin" ]]; then
+    # Use xcode-avoidance scripts
+    export PATH=$PREFIX/bin/xc-avoidance:$PATH
 fi
 
 echo "==========================="
