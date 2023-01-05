@@ -71,8 +71,11 @@ if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" == "1" ]]; then
   EXTRA_FLAGS="--target-dir $SITE_PKGS_PATH"
 fi
 
+echo $PATH
+
 $SIP_COMMAND \
     --no-make \
+	--qt-shared \
     --qsci-features-dir ../src/features \
     --qsci-include-dir ../src \
     --qsci-library-dir ../src \
