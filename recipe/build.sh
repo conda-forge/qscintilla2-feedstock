@@ -75,7 +75,7 @@ echo $PATH
 
 $SIP_COMMAND \
     --no-make \
-    --qt-shared \
+	--qt-shared \
     --qsci-features-dir ../src/features \
     --qsci-include-dir ../src \
     --qsci-library-dir ../src \
