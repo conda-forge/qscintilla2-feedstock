@@ -65,6 +65,8 @@ mv pyproject{-qt5,}.toml
 echo "[tool.sip.project]
 sip-include-dirs = [\"${PREFIX}/lib/python${PY_VER}/site-packages/PyQt5/bindings\", \"${PREFIX}/share/sip\"]" >> pyproject.toml
 
+# Force correct flags for cross python compilation
+# https://github.com/conda-forge/cross-python-feedstock/pull/65
 if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" == "1" ]]; then
   SIP_COMMAND="$BUILD_PREFIX/bin/python -m sipbuild.tools.build"
   SITE_PKGS_PATH=$($PREFIX/bin/python -c 'import site;print(site.getsitepackages()[0])')
