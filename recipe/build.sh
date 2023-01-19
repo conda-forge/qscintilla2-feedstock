@@ -62,8 +62,13 @@ echo "========================"
 cd ${SRC_DIR}/Python
 # Configure compilation of Python Qsci module
 mv pyproject{-qt5,}.toml
-echo "[tool.sip.project]
-sip-include-dirs = [\"${PREFIX}/lib/python${PY_VER}/site-packages/PyQt5/bindings\", \"${PREFIX}/share/sip\"]" >> pyproject.toml
+if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" == "1" ]]; then
+	echo "[tool.sip.project]
+	sip-include-dirs = [\"${BUILD_PREFIX}/lib/python${PY_VER}/site-packages/PyQt5/bindings\", \"${BUILD_PREFIX}/share/sip\"]" >> pyproject.toml
+else
+	echo "[tool.sip.project]
+	sip-include-dirs = [\"${PREFIX}/lib/python${PY_VER}/site-packages/PyQt5/bindings\", \"${PREFIX}/share/sip\"]" >> pyproject.toml
+fi
 
 # Force correct flags for cross python compilation
 # https://github.com/conda-forge/cross-python-feedstock/pull/65
