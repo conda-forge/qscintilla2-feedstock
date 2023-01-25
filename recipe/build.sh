@@ -2,6 +2,9 @@
 set -ex
 set -o pipefail
 
+SIP_COMMAND="sip-build"
+EXTRA_FLAGS=""
+
 export SIP_DIR="${PREFIX}/lib/python${PY_VER}/site-packages/PyQt5/bindings"
 export QMAKEFEATURES=${SRC_DIR}/src/features/
 
@@ -59,19 +62,41 @@ echo "========================"
 cd ${SRC_DIR}/Python
 # Configure compilation of Python Qsci module
 mv pyproject{-qt5,}.toml
-echo "[tool.sip.project]
-sip-include-dirs = [\"${PREFIX}/lib/python${PY_VER}/site-packages/PyQt5/bindings\", \"${PREFIX}/share/sip\"]" >> pyproject.toml
+if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" == "1" ]]; then
+	echo "[tool.sip.project]
+	sip-include-dirs = [\"${BUILD_PREFIX}/lib/python${PY_VER}/site-packages/PyQt5/bindings\", \"${BUILD_PREFIX}/share/sip\"]" >> pyproject.toml
+else
+	echo "[tool.sip.project]
+	sip-include-dirs = [\"${PREFIX}/lib/python${PY_VER}/site-packages/PyQt5/bindings\", \"${PREFIX}/share/sip\"]" >> pyproject.toml
+fi
 
-sip-build \
+# Force correct flags for cross python compilation
+# https://github.com/conda-forge/cross-python-feedstock/pull/65
+if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" == "1" ]]; then
+  SIP_COMMAND="$BUILD_PREFIX/bin/python -m sipbuild.tools.build"
+  SITE_PKGS_PATH=$($PREFIX/bin/python -c 'import site;print(site.getsitepackages()[0])')
+  EXTRA_FLAGS="--target-dir $SITE_PKGS_PATH"
+fi
+
+$SIP_COMMAND \
     --no-make \
     --qsci-features-dir ../src/features \
     --qsci-include-dir ../src \
     --qsci-library-dir ../src \
-    --api-dir ${PREFIX}/qsci/api/python
+    --api-dir ${PREFIX}/qsci/api/python \
+$EXTRA_FLAGS
 
 #$PYTHON configure.py --pyqt=PyQt${QT_MAJOR_VER} --sip=$PREFIX/bin/sip --qsci-incdir=${PREFIX}/include/qt --qsci-libdir=${PREFIX}/lib --spec=${BUILD_SPEC} --no-qsci-api
 # Build it
 cd build
+
+if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" == "1" ]]; then
+  # Make sure BUILD_PREFIX sip-distinfo is called instead of the HOST one
+  cat Makefile | sed -r 's|\t(.*)sip-distinfo(.*)|\t'$BUILD_PREFIX/bin/python' -m sipbuild.distinfo.main \2|' > Makefile.temp
+  rm Makefile
+  mv Makefile.temp Makefile
+fi
+
 make
 # Install QSci.so to the site-packages folder
 make install

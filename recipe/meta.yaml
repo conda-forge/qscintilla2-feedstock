@@ -9,7 +9,7 @@ source:
   sha256: 711d28e37c8fccaa8229e8e39a5b3b2d97f3fffc63da10b71c71b84fa3649398
 
 build:
-  number: 4
+  number: 5
 
 requirements:
   build:
@@ -90,6 +90,11 @@ requirements:
     - {{ cdt('libxxf86vm') }}            # [linux]
     - {{ cdt('libxrandr') }}             # [linux]
     - {{ cdt('alsa-lib') }}              # [linux]
+
+    - python                                # [build_platform != target_platform]
+    - cross-python_{{ target_platform }}    # [build_platform != target_platform]
+    - sip                                   # [build_platform != target_platform]
+    - pyqt5-sip                             # [build_platform != target_platform]
   host:
     - python
     - pip
@@ -126,3 +131,4 @@ extra:
     - dschreij
     - ocefpaf
     - matthiasdiener
+    - SrNetoChan
