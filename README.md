@@ -1,11 +1,11 @@
-About qscintilla2
-=================
+About qscintilla2-feedstock
+===========================
+
+Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/qscintilla2-feedstock/blob/main/LICENSE.txt)
 
 Home: https://www.riverbankcomputing.com/software/qscintilla/intro
 
 Package license: GPL-3.0-or-later
-
-Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/qscintilla2-feedstock/blob/main/LICENSE.txt)
 
 Summary: Qscintilla2 editor for Qt
 
