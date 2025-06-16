@@ -29,7 +29,7 @@ requirements:
     - pip
     - setuptools
     - qt-main
-    #- pyqt {{ pyqt_version }}
+    - pyqt {{ pyqt_version }}
     - pyqt-builder {{ pyqt_builder_version }}   # [build_platform == target_platform]
     - sip {{ sip_version }}                     # [build_platform == target_platform]
     - libgl-devel                               # [linux]
