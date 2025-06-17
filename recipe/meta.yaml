@@ -1,7 +1,4 @@
 {% set version = "2.14.1" %}
-{% set pyqt_version = "5.15.11" %}
-{% set sip_version = "6.10.0" %}
-{% set pyqt_builder_version = "<1.16.0" %}
 
 package:
   name: qscintilla2
@@ -22,16 +19,16 @@ requirements:
     - make
     - python                                    # [build_platform != target_platform]
     - cross-python_{{ target_platform }}        # [build_platform != target_platform]
-    - pyqt-builder {{ pyqt_builder_version }}   # [build_platform != target_platform]
-    - sip {{ sip_version }}                     # [build_platform != target_platform]
+    - pyqt-builder                              # [build_platform != target_platform]
+    - sip                                       # [build_platform != target_platform]
   host:
     - python
     - pip
     - setuptools
     - qt-main
-    - pyqt {{ pyqt_version }}
-    - pyqt-builder {{ pyqt_builder_version }}   # [build_platform == target_platform]
-    - sip {{ sip_version }}                     # [build_platform == target_platform]
+    - pyqt 
+    - pyqt-builder                              # [build_platform == target_platform]
+    - sip                                       # [build_platform == target_platform]
     - libgl-devel                               # [linux]
     - libegl-devel                              # [linux]
     - libopengl-devel                           # [linux]
