@@ -9,7 +9,7 @@ source:
   sha256: dfe13c6acc9d85dfcba76ccc8061e71a223957a6c02f3c343b30a9d43a4cdd4d
 
 build:
-  number: 2
+  number: 3
 
 requirements:
   build:
@@ -21,12 +21,13 @@ requirements:
     - cross-python_{{ target_platform }}        # [build_platform != target_platform]
     - pyqt-builder                              # [build_platform != target_platform]
     - sip                                       # [build_platform != target_platform]
+    - qt6-main >=6.11                           # [build_platform != target_platform]
   host:
     - python
     - pip
     - setuptools
-    - qt-main
-    - pyqt 
+    - qt6-main >=6.11
+    - pyqt6
     - pyqt-builder                              # [build_platform == target_platform]
     - sip                                       # [build_platform == target_platform]
     - libgl-devel                               # [linux]
@@ -46,13 +47,15 @@ requirements:
     - xorg-libxcomposite                        # [linux]
     - xorg-libxxf86vm                           # [linux]
     - xorg-xf86vidmodeproto                     # [linux]
+    - libglvnd                                  # [linux]
   run:
     - python
-    - pyqt
+    - pyqt6
+    - libglvnd                                  # [linux]
 
 test:
   imports:
-    - PyQt5.Qsci
+    - PyQt6.Qsci
 
 about:
   home: https://www.riverbankcomputing.com/software/qscintilla/intro

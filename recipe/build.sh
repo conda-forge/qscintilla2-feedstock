@@ -5,13 +5,13 @@ set -o pipefail
 SIP_COMMAND="sip-build"
 EXTRA_FLAGS=""
 
-export SIP_DIR="${PREFIX}/lib/python${PY_VER}/site-packages/PyQt5/bindings"
+export SIP_DIR="${PREFIX}/lib/python${PY_VER}/site-packages/PyQt6/bindings"
 export QMAKEFEATURES=${SRC_DIR}/src/features/
 
-QT_MAJOR_VER=$(qmake -v | sed -n 's/.*Qt version \([0-9])*\).*/\1/p')
+QT_MAJOR_VER=6 #$(qmake6 -v | sed -n 's/.*Qt version \([0-9])*\).*/\1/p')
 if [ -z "$QT_MAJOR_VER" ]; then
 	echo "Could not determine Qt version of string provided by qmake:"
-	echo $(qmake -v)
+	echo $(qmake6 -v)
 	echo "Aborting..."
 	exit 1
 else
@@ -30,6 +30,7 @@ else
 		ln -s ${GCC} gcc || true
 	popd
 	export PATH=${PWD}/bin:${PATH}
+	export LDFLAGS="${LDFLAGS} -L/usr/lib64"
 fi
 
 echo "==========================="
@@ -40,8 +41,11 @@ echo "==========================="
 # Go to Qscintilla source dir and then to its src folder.
 cd ${SRC_DIR}/src
 # Build the makefile with qmake
-qmake qscintilla.pro -spec ${BUILD_SPEC} -config release
-
+if [ $(uname) == Darwin ]; then
+  qmake6 qscintilla.pro -spec ${BUILD_SPEC} -config release
+else
+  qmake6 QMAKE_LIBS_OPENGL='-lOpenGL' QMAKE_LFLAGS="$LDFLAGS" qscintilla.pro -spec ${BUILD_SPEC} -config release
+fi
 # Build Qscintilla
 make -j${CPU_COUNT} ${VERBOSE_AT}
 # and install it
@@ -49,7 +53,11 @@ echo "Installing QScintilla"
 make install
 
 cd ${SRC_DIR}/designer
-qmake
+if [ $(uname) == Darwin ]; then
+  qmake6
+else
+  qmake6 QMAKE_INCDIR_OPENGL='/usr/include' QMAKE_LFLAGS="$LDFLAGS"  QMAKE_LIBS_OPENGL='-lOpenGL'
+fi
 make
 make install
 
@@ -61,13 +69,13 @@ echo "========================"
 # Go to python folder
 cd ${SRC_DIR}/Python
 # Configure compilation of Python Qsci module
-mv pyproject{-qt5,}.toml
+mv pyproject{-qt6,}.toml
 if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" == "1" ]]; then
 	echo "[tool.sip.project]
-	sip-include-dirs = [\"${BUILD_PREFIX}/lib/python${PY_VER}/site-packages/PyQt5/bindings\", \"${BUILD_PREFIX}/share/sip\"]" >> pyproject.toml
+	sip-include-dirs = [\"${BUILD_PREFIX}/lib/python${PY_VER}/site-packages/PyQt6/bindings\", \"${BUILD_PREFIX}/share/sip\"]" >> pyproject.toml
 else
 	echo "[tool.sip.project]
-	sip-include-dirs = [\"${PREFIX}/lib/python${PY_VER}/site-packages/PyQt5/bindings\", \"${PREFIX}/share/sip\"]" >> pyproject.toml
+	sip-include-dirs = [\"${PREFIX}/lib/python${PY_VER}/site-packages/PyQt6/bindings\", \"${PREFIX}/share/sip\"]" >> pyproject.toml
 fi
 
 # Force correct flags for cross python compilation
@@ -84,6 +92,7 @@ $SIP_COMMAND \
     --qsci-include-dir ../src \
     --qsci-library-dir ../src \
     --api-dir ${PREFIX}/qsci/api/python \
+    --qmake "${PREFIX}/bin/qmake6" \
 $EXTRA_FLAGS
 
 #$PYTHON configure.py --pyqt=PyQt${QT_MAJOR_VER} --sip=$PREFIX/bin/sip --qsci-incdir=${PREFIX}/include/qt --qsci-libdir=${PREFIX}/lib --spec=${BUILD_SPEC} --no-qsci-api
