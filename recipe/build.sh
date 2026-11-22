@@ -26,8 +26,8 @@ else
 	# g++ cannot be found afterwards, solution taken from pyqt-feedstock
 	mkdir bin || true
 	pushd bin
-		ln -s ${GXX} g++ || true
-		ln -s ${GCC} gcc || true
+		ln -sf "$(command -v "${GXX}")" g++
+		ln -sf "$(command -v "${GCC}")" gcc
 	popd
 	export PATH=${PWD}/bin:${PATH}
 	export LDFLAGS="${LDFLAGS} -L/usr/lib64"
